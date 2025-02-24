@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="../images/logo1.png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <title>Summary</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #cfecff;
+            margin: 3px 3px;
+        }
+
+        .sum-p{
+           animation: summary 1s;
+        }
+
+        .text-area-ai{
+            width: 320px;
+            height: 100px;
+            background-color: rgba(0, 145, 255, 0.061);
+    border: rgba(0, 145, 255, 0.061) 1px solid;
+    border-radius: 30px;
+    padding: 10px 0px;
+        }
+
+.sum-button{
+    text-shadow: white 1px 0 10px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 145, 255, 0.142);
+    color: rgb(0, 0, 0);
+    padding: 10px;
+    border: rgba(0, 145, 255, 0.394);
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.logow{
+    text-decoration: none;
+    color: black;
+font-size: 20px;
+}
+
+        @keyframes summary {
+               0% {
+                   opacity: 0;
+               }
+               100% {
+                   opacity: 1;
+               }
+           }
+    </style>
+</head>
+
+<body>
+    <a href="../index.html" class="logow">WinexAppStore</a>
+    <h1 class="main-title">Winex AI Summary (T5-small)</h1>
+    <textarea id="input_text" placeholder="Text..." class="text-area-ai"></textarea><br>
+    <button class="sum-button" onclick="summarizeText()">Summarize</button>
+    <h2>result:</h2>
+    <p id="summary_output" class="sum-p"></p>
+
+    <script>
+        async function summarizeText() {
+            let text = document.getElementById("input_text").value;
+            if (!text.trim()) {
+                alert("Введите текст!");
+                return;
+            }
+
+            let response = await fetch("/summarize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text })
+            });
+
+            let result = await response.json();
+            if (result.summary) {
+                document.getElementById("summary_output").innerText = result.summary;
+            } else {
+                document.getElementById("summary_output").innerText = "Ошибка!";
+            }
+        }
+    </script>
+</body>
+
+</html>

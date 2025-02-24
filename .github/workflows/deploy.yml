@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Здесь указываем ветку, с которой будет происходить деплой (например, main)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '22'  # Версия Node.js, подходящая для твоего проекта
+
+    - name: Install dependencies
+      run: |
+        npm install
+
+    - name: Build the project
+      run: |
+        npm run build  # Команда для сборки, если она у тебя есть в package.json
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        personal_token: ${{ secrets.GITHUB_TOKEN }}  # Используем автоматически созданный токен
+        publish_dir: ./build  # Указываем директорию, которую нужно развернуть (можно изменить, если у тебя другая структура)
