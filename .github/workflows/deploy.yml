@@ -1,4 +1,4 @@
-name: Deploy Winex AI Summary
+name: Deploy Flask & Node.js App
 
 on:
   push:
@@ -10,16 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Клонирование репозитория
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Установка Python
+        uses: actions/setup-python@v4
         with:
-          node-version: '22' # или та версия Node.js, которую ты используешь
+          python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Установка зависимостей Python
+        run: pip install -r requirements.txt
+
+      - name: Установка Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Установка зависимостей npm
         run: npm install
 
-      - name: Run app
-        run: npm run start
+      - name: Запуск Flask-сервера
+        run: python app.py
